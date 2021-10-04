@@ -3,11 +3,13 @@ import { Form, Row, Col, FloatingLabel, Button, Card, Table , Alert } from 'reac
 
 function InputOutput(props) {
 
-    const [amount, setAmount] = useState(0)
-    const [service, setService] = useState(0)
-    const [customer, setCustomer] = useState("")
-    const [tip, setTip] = useState([])
-    const [totalCustomer, setTotalCustomer] = useState(0)
+    const [amount, setAmount] = useState("");
+    const [service, setService] = useState("");
+    const [customer, setCustomer] = useState("");
+    const [tip, setTip] = useState([]);
+    const [totalCustomer, setTotalCustomer] = useState(0);
+    const [tip1, setTip1] = useState([0])
+
 
 
     const handler = (event) => {
@@ -21,26 +23,22 @@ function InputOutput(props) {
     }
     const handler2 = (event) => {
         setCustomer(event.target.value)
-
         setTip(amount * service)
-
-
     }
 
 
 
 
     const getData = () => {
-        props.AddTip(tip);
+        
         props.AddCustomerName(`${customer} Offering a Tip Of - Rs.  ${tip}`);
-
-
-
+        props.AddTip(tip);
+        setCustomer("");
     }
   
     const getData1 = () => {
-        
-        setTotalCustomer(`${props.customername.length}`)
+        setTip1(`${props.totaltip.reduce((prev, next) => prev + next)}`);
+        setTotalCustomer(`${props.customername.length}`);
     }
 
     return (
@@ -50,7 +48,7 @@ function InputOutput(props) {
                 <Form className="container" >
                     <Form.Group className="container mb-3" controlId="formBillAmount">
                         <Form.Label>Enter Bill Amount</Form.Label>
-                        <Form.Control type="text" placeholder="Enter Bill Amount" onChange={handler} style={{  background: "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)" }} />
+                        <Form.Control type="number" value={amount} placeholder="Enter Bill Amount" onChange={handler} style={{  background: "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)" }} />
                     </Form.Group>
                     <br></br>
                     <hr style={{ color: "black" }}></hr>
@@ -63,16 +61,15 @@ function InputOutput(props) {
                             <FloatingLabel controlId="floatingSelectGrid" label="How Was The Service">
                                 <Form.Select aria-label="Floating label select example" style={{  background: "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)" }} value={service} onChange={handler1} >
                                     <option value="0">Choose Our Services</option>
-                                    <option value="0.20">Excellent</option>
-                                    <option value="0.15">Good</option>
-                                    <option value="0.10">Not So Good</option>
-                                    <option value="0.05">Bad</option>
+                                    <option value="0.3">30&#37; &#45; Excellent</option>
+                                    <option value="0.15">15&#37; &#45; It was OK</option>
+                                    <option value="0.05">5&#37; &#45; Too Bad</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
                         <Col md>
                             <FloatingLabel controlId="floatingInputGrid" label="Customer Name">
-                                <Form.Control type="text" style={{ background: "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)"}}placeholder="Enter Your Name" onChange={handler2} />
+                                <Form.Control type="text" value={customer} style={{ background: "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)"}} placeholder="Enter Your Name" onChange={handler2} />
                             </FloatingLabel>
                             <br></br>
                             <br></br>
@@ -123,13 +120,13 @@ function InputOutput(props) {
                     </thead>
                     <tbody style={{ textAlign: "center" }}>
                         {
-                            <tr style={{ background: "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)"}}>
+                            <tr>
 
-                                <td style={{ background: "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)"}}>{totalCustomer}</td>
+                                <td>{totalCustomer}</td>
 
 
-                                <td style={{ background: "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)"}}>
-                                    Rs.{props.totaltip.reduce((prev, next) => prev + next)}
+                                <td>
+                                    Rs.{tip1}
                                 </td>
 
                             </tr>
